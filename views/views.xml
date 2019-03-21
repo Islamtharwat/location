@@ -1,0 +1,55 @@
+<odoo>
+  <data>
+
+        <record model="ir.ui.view" id="meeting_location_form">
+            <field name="name">Meeting form</field>
+            <field name="model">meeting.location</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                               <field name="attendance_meeting" widget="radio" options="{'horizontal': true}"/>
+                            </h1>
+                        </div>
+                        <div>
+                            <group>
+                                <group>
+                                    <field name="employee_id"/>
+                                    <field name="customer" attrs="{'invisible':[('attendance_meeting','=','attendance')],'required':[('attendance_meeting','=','meeting')]}"/>
+                                    <field name="lat_ip" invisible="1"/>
+                                    <field name="lon_ip"  invisible="1"/>
+                                    <field name="add_ip"  readonly="1"/>
+                                    <field name="check_in_attendance"  readonly="1" attrs="{'invisible':[('attendance_meeting','=','attendance')]}" />
+                                    <field name="check_out_attendance"  readonly="1" attrs="{'invisible':[('attendance_meeting','=','attendance')]}" />
+                                </group>
+                            </group>
+                        </div>
+                    </sheet>
+                </form>
+        </field>
+      </record>
+        <record model="ir.ui.view" id="meeting_location_tree">
+            <field name="name">Meeting tree</field>
+            <field name="model">meeting.location</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="employee_id"/>
+                    <field name="customer"/>
+                    <field name="add_ip"/>
+                    <field name="check_in_attendance"/>
+                    <field name="check_out_attendance"/>
+                </tree>
+        </field>
+      </record>
+            <record model="ir.actions.act_window" id="meeting_action_window">
+            <field name="name">Meeting</field>
+            <field name="res_model">meeting.location</field>
+            <field name="view_mode">tree,form</field>
+          <field name="domain">[('attendance_meeting','=','meeting'),('check_out_attendance','!=',False)]</field>
+        </record>
+
+      <menuitem name="Meeting" id="menu_meeting" action="meeting_action_window"
+                  parent="hr_attendance.menu_hr_attendance_manage_attendances" sequence="90" groups="base.group_system"/>
+  </data>
+</odoo>
